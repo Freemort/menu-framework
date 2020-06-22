@@ -22,7 +22,27 @@ public class MenuOpenSlideAnim: ScriptableObject
 
     private async void Animation(Action action) 
     {
+        Action action1;
         float tmp = 0;
+        switch (sliderType)
+        {
+            case SliderType.FromLeft:
+                action1 = () => Left(tmp);
+                break;
+            case SliderType.FromRight:
+                action1 = () => Right(tmp);
+                break;
+            case SliderType.FromDown:
+                action1 = () => Down(tmp);
+                break;
+            case SliderType.FromUp:
+                action1 = () => Up(tmp);
+                break;
+            default:
+                action1 = () => Left(tmp);
+                break;
+        }
+
         for (float i = 0; i < timer; i += Time.deltaTime)
         {
             if (i > 0)
@@ -30,30 +50,13 @@ public class MenuOpenSlideAnim: ScriptableObject
             if (tmp > 1)
                 tmp = 1;
 
-            switch (sliderType)
-            {
-                case SliderType.FromLeft:
-                    Left(tmp);
-                    break;
-                case SliderType.FromRight:
-                    Right(tmp);
-                    break;
-                case SliderType.FromDown:
-                    Down(tmp);
-                    break;
-                case SliderType.FromUp:
-                    Up(tmp);
-                    break;
-                default:
-                    Left(tmp);
-                    break;
-            }
+            action1();
 
             await Task.Yield();
         }
 
-        transform.anchorMin = new Vector2(0f, 0f);
-        transform.anchorMax = new Vector2(1f, 1f);
+        tmp = 1f;
+        action1();
 
         action?.Invoke();
     }
