@@ -52,7 +52,10 @@ public class MenuNavigator : MonoBehaviour
             return;
         }
 
-        action = newAction;
+        if (newAction == action) 
+            return;
+
+        action = (MenuActionBase)MenuActionBase.CreateInstance(newAction.GetType());
     }
 
     public Type GetActionType() 
