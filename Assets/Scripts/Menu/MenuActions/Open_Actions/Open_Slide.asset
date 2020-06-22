@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 407b2fae4507baa4da442ee92388dac8, type: 3}
+  m_Name: Open_Slide
+  m_EditorClassIdentifier: 
+  slideAnim: {fileID: 11400000, guid: ea796f0859fd9514e9a4beff82cf6fb7, type: 2}
