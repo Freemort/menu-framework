@@ -11,6 +11,7 @@ public class MenuActionSwitchSlide : MenuActionSwitchBase
     protected override void ActionProceed()
     {
         OpenBegin();
+        CloseBegin();
     }
 
     protected override void OpenBegin()
@@ -18,6 +19,19 @@ public class MenuActionSwitchSlide : MenuActionSwitchBase
         targetMenu.gameObject.SetActive(true);
         targetMenu.OpenBegin(parentMenu);
 
+        var rectTransform = targetMenu.gameObject.GetComponent<RectTransform>();
+        var slideAnimOpen = MenuOpenSlideAnim.CreateInstance<MenuOpenSlideAnim>();
+        slideAnimOpen.StartAnim(rectTransform, OpenFinish, sliderType);
+    }
+
+    protected override void OpenFinish()
+    {
+        targetMenu.OpenFinish();
+    }
+
+    protected override void CloseBegin()
+    {
+        parentMenu.CloseBegin();
         SliderType closeSliderType;
 
         switch (sliderType)
@@ -39,23 +53,9 @@ public class MenuActionSwitchSlide : MenuActionSwitchBase
                 break;
         }
 
-        var rectTransform = targetMenu.gameObject.GetComponent<RectTransform>();
-        var slideAnimOpen = MenuOpenSlideAnim.CreateInstance<MenuOpenSlideAnim>();
-        slideAnimOpen.StartAnim(rectTransform, OpenFinish, sliderType);
-
-        rectTransform = parentMenu.gameObject.GetComponent<RectTransform>();
+        var rectTransform = parentMenu.gameObject.GetComponent<RectTransform>();
         var slideAnimClose = MenuCloseSlideAnim.CreateInstance<MenuCloseSlideAnim>();
         slideAnimClose.StartAnim(rectTransform, CloseFinish, closeSliderType);
-    }
-
-    protected override void OpenFinish()
-    {
-        targetMenu.OpenFinish();
-    }
-
-    protected override void CloseBegin()
-    {
-        parentMenu.CloseBegin();
     }
 
     protected override void CloseFinish()

@@ -22,7 +22,8 @@ public abstract class MenuActionBase: ScriptableObject
             //task.Wait();
 
             //targetMenu.loadingScreen.SetActive(true);
-            await Task.Run(() => targetMenu.AwaitersBegin());
+            if(targetMenu.loadingScreen != null)
+                await Task.Run(() => targetMenu.AwaitersBegin());
 
             //targetMenu.loadingScreen.SetActive(false);
             //while (targetMenu.isProceeding)
@@ -33,7 +34,8 @@ public abstract class MenuActionBase: ScriptableObject
         else 
         {
 #pragma warning disable CS4014 // Так как этот вызов не ожидается, выполнение существующего метода продолжается до тех пор, пока вызов не будет завершен
-            Task.Run(() => targetMenu.AwaitersBegin());
+            if (targetMenu.loadingScreen != null)
+                Task.Run(() => targetMenu.AwaitersBegin());
 #pragma warning restore CS4014 // Так как этот вызов не ожидается, выполнение существующего метода продолжается до тех пор, пока вызов не будет завершен
         }
 

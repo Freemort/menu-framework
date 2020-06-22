@@ -83,10 +83,16 @@ public abstract class MenuBase: MonoBehaviour
     {
         for (int i = 0; i < menuChilds.Count; i++)
         {
-            menuChilds[i].CloseBegin();
-            menuChilds[i].CloseFinish();
+            menuChilds[i].Close();
         }
-        gameObject.SetActive(false);
+    }
+
+    public virtual void Close() 
+    {
+        if (backButton != null)
+            backButton.onClick.Invoke();
+        else
+            gameObject.SetActive(false);
     }
 
     public virtual void Reset() { }

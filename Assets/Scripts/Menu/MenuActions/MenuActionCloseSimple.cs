@@ -18,6 +18,7 @@ public class MenuActionCloseSimple : MenuActionCloseBase
     protected override void CloseFinish()
     {
         targetMenu.CloseFinish();
+        targetMenu.DisableChilds();
         targetMenu.gameObject.SetActive(false);
     }
 
