@@ -75,7 +75,7 @@ public abstract class MenuBase: MonoBehaviour
     }
     public virtual void CloseFinish() 
     {
-        DisableChilds();
+        //DisableChilds();
         canvasGroup.interactable = true;
     }
 

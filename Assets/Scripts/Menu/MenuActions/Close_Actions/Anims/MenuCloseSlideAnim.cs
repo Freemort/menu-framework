@@ -25,16 +25,16 @@ public class MenuCloseSlideAnim : ScriptableObject
         float tmp = 0;
         switch (sliderType)
         {
-            case SliderType.FromLeft:
+            case SliderType.Left:
                 action1 = () => Left(tmp);
                 break;
-            case SliderType.FromRight:
+            case SliderType.Right:
                 action1 = () => Right(tmp);
                 break;
-            case SliderType.FromDown:
+            case SliderType.Down:
                 action1 = () => Down(tmp);
                 break;
-            case SliderType.FromUp:
+            case SliderType.Up:
                 action1 = () => Up(tmp);
                 break;
             default:

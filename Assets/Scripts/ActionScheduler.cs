@@ -17,10 +17,10 @@ public sealed class ActionScheduler : MonoBehaviour
 
     void Update()
     {
-        for (int i = actions.Count - 1; i >= 0; i--)
+        while (actions.Count > 0) 
         {
-            actions[i]?.Invoke();
-            actions.RemoveAt(i);
+            actions[0]?.Invoke();
+            actions.RemoveAt(0);
         }
     }
 

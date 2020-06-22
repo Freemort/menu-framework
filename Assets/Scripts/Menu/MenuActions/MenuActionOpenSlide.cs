@@ -5,10 +5,10 @@ using UnityEditor;
 
 public enum SliderType
 {
-    FromLeft,
-    FromRight,
-    FromDown,
-    FromUp
+    Left,
+    Right,
+    Down,
+    Up
 }
 
 [CreateAssetMenu(fileName = "Open_Slide", menuName = "ScriptableObjects/MenuActions/Spawn_MenuOpenSlide", order = 1)]
