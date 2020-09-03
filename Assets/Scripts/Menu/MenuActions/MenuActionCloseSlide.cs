@@ -21,7 +21,8 @@ public class MenuActionCloseSlide : MenuActionCloseBase
 
         var rectTransform = targetMenu.gameObject.GetComponent<RectTransform>();
         slideAnim = MenuCloseSlideAnim.CreateInstance<MenuCloseSlideAnim>();
-        slideAnim.StartAnim(rectTransform, CloseFinish, sliderType);
+        slideAnim.Init(rectTransform, CloseFinish, sliderType);
+        slideAnim.AnimStart();
     }
 
     protected override void CloseFinish()
@@ -31,6 +32,7 @@ public class MenuActionCloseSlide : MenuActionCloseBase
 
     public override void StopAction()
     {
+        base.StopAction();
     }
 
     public override void EditorLogic()

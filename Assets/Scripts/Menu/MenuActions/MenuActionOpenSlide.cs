@@ -28,7 +28,8 @@ public class MenuActionOpenSlide : MenuActionOpenBase
         targetMenu.OpenBegin(parentMenu);
         var rectTransform = targetMenu.gameObject.GetComponent<RectTransform>();
         slideAnim = MenuOpenSlideAnim.CreateInstance<MenuOpenSlideAnim>();
-        slideAnim.StartAnim(rectTransform, OpenFinish, sliderType);
+        slideAnim.Init(rectTransform, OpenFinish, sliderType);
+        slideAnim.AnimStart();
     }
 
     protected override void OpenFinish()
@@ -38,6 +39,7 @@ public class MenuActionOpenSlide : MenuActionOpenBase
 
     public override void StopAction()
     {
+        base.StopAction();
     }
 
     public override void EditorLogic()

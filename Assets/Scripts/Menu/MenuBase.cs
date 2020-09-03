@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +13,6 @@ public enum AwaiterRunType
 [RequireComponent(typeof(CanvasGroup))]
 public abstract class MenuBase: MonoBehaviour
 {
-    public static MenuHistory menuHistory { get; set; }
     public List<MenuBase> menuChilds;
     private MenuBase parent;
     private CanvasGroup canvasGroup;
@@ -30,21 +28,18 @@ public abstract class MenuBase: MonoBehaviour
     {
         menuChilds = new List<MenuBase>();
         canvasGroup = GetComponent<CanvasGroup>();
-
-        if(menuHistory == null)
-            menuHistory = MenuController.instance.MenuHistory;
     }
 
     /// <summary>
     /// Scheduled/async code goes here. For manipulating Unity objects use "ActionScheduler.AddAction()".
     /// </summary>
-    protected virtual void Awaiters() { }
-    public virtual void AwaitersBegin() 
+    protected virtual void Awaiters(CancellationToken token) { }
+    public virtual void AwaitersBegin(CancellationToken token) 
     {
         //Need to remake loading screen logic entirely
         Debug.LogWarning("WIP");
         ActionScheduler.AddAction(() => loadingScreen.SetActive(true));
-        Awaiters();
+        Awaiters(token);
         AwaitersFinish();
     }
     protected virtual void AwaitersFinish() 
@@ -96,16 +91,4 @@ public abstract class MenuBase: MonoBehaviour
     }
 
     public virtual void Reset() { }
-
-    public static void Back() 
-    {
-        if (menuHistory == null)
-            return;
-
-        if (menuHistory.Count == 0)
-            return;
-
-        MenuBase lastMenu = menuHistory[menuHistory.Count - 1];
-        lastMenu.backButton?.onClick.Invoke();
-    }
 }

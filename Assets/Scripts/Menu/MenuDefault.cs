@@ -9,11 +9,5 @@ using UnityEngine;
 
 public class MenuDefault : MenuBase
 {
-    /*
-    protected override void Awaiters()
-    {
-        DateTime time = DateTime.Now.AddSeconds(5);
-        while (DateTime.Now < time) { }
-    }
-    */
+
 }

@@ -5,8 +5,8 @@ public abstract class MenuActionSwitchBase : MenuActionBase
 {
     protected override void ManageHistory()
     {
-        MenuBase.menuHistory.Add(targetMenu);
-        MenuBase.menuHistory.RemoveFromChilds(targetMenu);
+        MenuController.MenuHistory.Add(targetMenu);
+        MenuController.MenuHistory.RemoveFromChilds(targetMenu);
     }
 
     protected abstract void OpenBegin();

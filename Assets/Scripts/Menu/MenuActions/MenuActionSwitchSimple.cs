@@ -37,5 +37,6 @@ public class MenuActionSwitchSimple : MenuActionSwitchBase
 
     public override void StopAction()
     {
+        base.StopAction();
     }
 }

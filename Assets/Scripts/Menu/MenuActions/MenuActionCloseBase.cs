@@ -4,7 +4,7 @@ public abstract class MenuActionCloseBase : MenuActionBase
 {
     protected override void ManageHistory()
     {
-        MenuBase.menuHistory.RemoveFromChilds(targetMenu, true);
+        MenuController.MenuHistory.RemoveFromChilds(targetMenu, true);
     }
 
     protected abstract void CloseBegin();

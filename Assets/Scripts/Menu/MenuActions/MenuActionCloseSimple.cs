@@ -24,5 +24,6 @@ public class MenuActionCloseSimple : MenuActionCloseBase
 
     public override void StopAction()
     {
+        base.StopAction();
     }
 }

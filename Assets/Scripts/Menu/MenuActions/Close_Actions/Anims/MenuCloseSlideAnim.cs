@@ -4,82 +4,89 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class MenuCloseSlideAnim : ScriptableObject
+public class MenuCloseSlideAnim : AnimationActionBase
 {
-    private RectTransform transform;
-    private float timer;
     private SliderType sliderType;
 
-    public void StartAnim(RectTransform transform, Action action, SliderType sliderType)
+    public void Init(RectTransform transform, Action action, SliderType sliderType)
     {
+        postAction = action;
         timer = 1f;
         this.transform = transform;
         this.sliderType = sliderType;
-
-        Animation(action);
+        animAction = GetSlideType();
+        AnimProgress = 0f;
     }
 
-    private async void Animation(Action action)
+    protected override async Task<float> Animation()
+    {
+        AnimProgress = 0f;
+        for (float i = 0; i < timer; i += Time.deltaTime)
+        {
+            await AnimStep(i);
+        }
+        AnimProgress = 1f;
+
+        return AnimProgress;
+    }
+
+    private async Task AnimStep(float i)
+    {
+        if (i > 0)
+            AnimProgress = i / timer;
+        if (AnimProgress > 1)
+            AnimProgress = 1;
+
+        if (AwaiterAction != null)
+            await AwaiterAction();
+        else
+            await Task.Yield();
+    }
+
+    private Action GetSlideType()
     {
         Action action1;
-        float tmp = 0;
         switch (sliderType)
         {
             case SliderType.Left:
-                action1 = () => Left(tmp);
+                action1 = () => Left();
                 break;
             case SliderType.Right:
-                action1 = () => Right(tmp);
+                action1 = () => Right();
                 break;
             case SliderType.Down:
-                action1 = () => Down(tmp);
+                action1 = () => Down();
                 break;
             case SliderType.Up:
-                action1 = () => Up(tmp);
+                action1 = () => Up();
                 break;
             default:
-                action1 = () => Left(tmp);
+                action1 = () => Left();
                 break;
         }
 
-
-        for (float i = 0; i < timer; i += Time.deltaTime)
-        {
-            if (i > 0)
-                tmp = i / timer;
-            if (tmp > 1)
-                tmp = 1;
-
-            action1();
-
-            await Task.Yield();
-        }
-
-        tmp = 1f;
-        action1();
-
-        action?.Invoke();
+        return action1;
     }
 
-    private void Left(float tmp)
+    private void Left()
     {
-        transform.anchorMin = new Vector2(0f - tmp, 0f);
-        transform.anchorMax = new Vector2(1f - tmp, 1f);
+        transform.anchorMin = new Vector2(0f - AnimProgress, 0f);
+        transform.anchorMax = new Vector2(1f - AnimProgress, 1f);
     }
-    private void Right(float tmp)
+    private void Right()
     {
-        transform.anchorMin = new Vector2(tmp, 0f);
-        transform.anchorMax = new Vector2(1f + tmp, 1f);
+        transform.anchorMin = new Vector2(AnimProgress, 0f);
+        transform.anchorMax = new Vector2(1f + AnimProgress, 1f);
     }
-    private void Down(float tmp)
+    private void Down()
     {
-        transform.anchorMin = new Vector2(0f, 0f - tmp);
-        transform.anchorMax = new Vector2(1f, 1f - tmp);
+        transform.anchorMin = new Vector2(0f, 0f - AnimProgress);
+        transform.anchorMax = new Vector2(1f, 1f - AnimProgress);
     }
-    private void Up(float tmp)
+    private void Up()
     {
-        transform.anchorMin = new Vector2(0f, 0f + tmp);
-        transform.anchorMax = new Vector2(1f, 1f + tmp);
+        transform.anchorMin = new Vector2(0f, 0f + AnimProgress);
+        transform.anchorMax = new Vector2(1f, 1f + AnimProgress);
     }
 
 }

@@ -26,6 +26,6 @@ public class InputController : MonoBehaviour
 
     public void Command_Back() 
     {
-        MenuBase.Back();
+        MenuController.Back();
     }
 }

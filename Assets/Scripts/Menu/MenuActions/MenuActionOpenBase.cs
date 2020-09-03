@@ -4,7 +4,7 @@ public abstract class MenuActionOpenBase : MenuActionBase
 {
     protected override void ManageHistory()
     {
-        MenuBase.menuHistory.Add(targetMenu);
+        MenuController.MenuHistory.Add(targetMenu);
     }
 
     protected abstract void OpenBegin();

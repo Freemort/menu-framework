@@ -10,30 +10,23 @@ public class MenuActionSwitchSlide : MenuActionSwitchBase
 
     protected override void ActionProceed()
     {
+        AnimationsBinder binder = new AnimationsBinder(AnimBinderType.Simultaneously, GetAnimClose(), GetOpenAnim());
+        binder.StartAnimations();
         OpenBegin();
         CloseBegin();
     }
 
-    protected override void OpenBegin()
+    private AnimationActionBase GetOpenAnim()
     {
-        targetMenu.gameObject.SetActive(true);
-        targetMenu.OpenBegin(parentMenu);
-
         var rectTransform = targetMenu.gameObject.GetComponent<RectTransform>();
         var slideAnimOpen = MenuOpenSlideAnim.CreateInstance<MenuOpenSlideAnim>();
-        slideAnimOpen.StartAnim(rectTransform, OpenFinish, sliderType);
+        slideAnimOpen.Init(rectTransform, OpenFinish, sliderType);
+        return slideAnimOpen;
     }
 
-    protected override void OpenFinish()
+    private AnimationActionBase GetAnimClose()
     {
-        targetMenu.OpenFinish();
-    }
-
-    protected override void CloseBegin()
-    {
-        parentMenu.CloseBegin();
         SliderType closeSliderType;
-
         switch (sliderType)
         {
             case SliderType.Left:
@@ -55,7 +48,24 @@ public class MenuActionSwitchSlide : MenuActionSwitchBase
 
         var rectTransform = parentMenu.gameObject.GetComponent<RectTransform>();
         var slideAnimClose = MenuCloseSlideAnim.CreateInstance<MenuCloseSlideAnim>();
-        slideAnimClose.StartAnim(rectTransform, CloseFinish, closeSliderType);
+        slideAnimClose.Init(rectTransform, CloseFinish, closeSliderType);
+        return slideAnimClose;
+    }
+
+    protected override void OpenBegin()
+    {
+        targetMenu.gameObject.SetActive(true);
+        targetMenu.OpenBegin(parentMenu);
+    }
+
+    protected override void OpenFinish()
+    {
+        targetMenu.OpenFinish();
+    }
+
+    protected override void CloseBegin()
+    {
+        parentMenu.CloseBegin();
     }
 
     protected override void CloseFinish()
@@ -64,9 +74,9 @@ public class MenuActionSwitchSlide : MenuActionSwitchBase
         parentMenu.CloseFinish();
     }
 
-    public override void StopAction()
-    {
-    }
+    //public override void StopAction()
+    //{
+    //}
 
     public override void EditorLogic()
     {

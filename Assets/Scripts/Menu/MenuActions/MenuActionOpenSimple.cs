@@ -23,5 +23,6 @@ public class MenuActionOpenSimple : MenuActionOpenBase
 
     public override void StopAction()
     {
+        base.StopAction();
     }
 }
