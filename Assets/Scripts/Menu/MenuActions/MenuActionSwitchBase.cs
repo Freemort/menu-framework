@@ -1,16 +1,19 @@
 ﻿using System.Threading.Tasks;
 using UnityEngine;
 
-public abstract class MenuActionSwitchBase : MenuActionBase
+namespace MutatronicMenues
 {
-    protected override void ManageHistory()
+    public abstract class MenuActionSwitchBase : MenuActionBase
     {
-        MenuController.MenuHistory.Add(targetMenu);
-        MenuController.MenuHistory.RemoveFromChilds(targetMenu);
-    }
+        protected override void ManageHistory()
+        {
+            MenuController.MenuHistory.Add(targetMenu);
+            MenuController.MenuHistory.RemoveFromChilds(targetMenu);
+        }
 
-    protected abstract void OpenBegin();
-    protected abstract void OpenFinish();
-    protected abstract void CloseBegin();
-    protected abstract void CloseFinish();
+        protected abstract void OpenBegin();
+        protected abstract void OpenFinish();
+        protected abstract void CloseBegin();
+        protected abstract void CloseFinish();
+    }
 }

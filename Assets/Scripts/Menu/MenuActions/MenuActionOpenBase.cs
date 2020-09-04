@@ -1,12 +1,15 @@
 ﻿using System.Threading.Tasks;
 
-public abstract class MenuActionOpenBase : MenuActionBase
+namespace MutatronicMenues
 {
-    protected override void ManageHistory()
+    public abstract class MenuActionOpenBase : MenuActionBase
     {
-        MenuController.MenuHistory.Add(targetMenu);
-    }
+        protected override void ManageHistory()
+        {
+            MenuController.MenuHistory.Add(targetMenu);
+        }
 
-    protected abstract void OpenBegin();
-    protected abstract void OpenFinish();
+        protected abstract void OpenBegin();
+        protected abstract void OpenFinish();
+    }
 }

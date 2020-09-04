@@ -1,12 +1,15 @@
 ﻿using System.Threading.Tasks;
 
-public abstract class MenuActionCloseBase : MenuActionBase
+namespace MutatronicMenues
 {
-    protected override void ManageHistory()
+    public abstract class MenuActionCloseBase : MenuActionBase
     {
-        MenuController.MenuHistory.RemoveFromChilds(targetMenu, true);
-    }
+        protected override void ManageHistory()
+        {
+            MenuController.MenuHistory.RemoveFromChilds(targetMenu, true);
+        }
 
-    protected abstract void CloseBegin();
-    protected abstract void CloseFinish();
+        protected abstract void CloseBegin();
+        protected abstract void CloseFinish();
+    }
 }

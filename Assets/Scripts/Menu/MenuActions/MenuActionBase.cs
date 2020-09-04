@@ -2,69 +2,72 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-[System.Serializable]
-public abstract class MenuActionBase: ScriptableObject
+namespace MutatronicMenues
 {
-    protected MenuBase parentMenu;
-    protected MenuBase targetMenu;
-
-    public static MenuActionBase currentAction;
-
-    protected CancellationTokenSource tokenSource;
-
-    public virtual void StopAction() 
+    [System.Serializable]
+    public abstract class MenuActionBase : ScriptableObject
     {
-        tokenSource.Cancel();
-        Debug.LogWarning("Works");
-    }
+        protected MenuBase parentMenu;
+        protected MenuBase targetMenu;
 
-    public async void ActionStart(MenuBase parentMenu, MenuBase targetMenu)
-    {
-        this.parentMenu = parentMenu;
-        this.targetMenu = targetMenu;
+        public static MenuActionBase currentAction;
 
-        currentAction = this;
+        protected CancellationTokenSource tokenSource;
 
-        tokenSource = new CancellationTokenSource();
-        if (targetMenu.awaiterType == AwaiterRunType.Await)
+        public virtual void StopAction()
         {
-            if(targetMenu.loadingScreen != null)
-                await Task.Run(() => targetMenu.AwaitersBegin(tokenSource.Token));
+            tokenSource.Cancel();
+            Debug.LogWarning("Works");
         }
-        else 
+
+        public async void ActionStart(MenuBase parentMenu, MenuBase targetMenu)
         {
+            this.parentMenu = parentMenu;
+            this.targetMenu = targetMenu;
+
+            currentAction = this;
+
+            tokenSource = new CancellationTokenSource();
+            if (targetMenu.awaiterType == AwaiterRunType.Await)
+            {
+                if (targetMenu.loadingScreen != null)
+                    await Task.Run(() => targetMenu.AwaitersBegin(tokenSource.Token));
+            }
+            else
+            {
 #pragma warning disable CS4014 // Так как этот вызов не ожидается, выполнение существующего метода продолжается до тех пор, пока вызов не будет завершен
-            if (targetMenu.loadingScreen != null)
-                Task.Run(() => targetMenu.AwaitersBegin(tokenSource.Token));
+                if (targetMenu.loadingScreen != null)
+                    Task.Run(() => targetMenu.AwaitersBegin(tokenSource.Token));
 #pragma warning restore CS4014 // Так как этот вызов не ожидается, выполнение существующего метода продолжается до тех пор, пока вызов не будет завершен
+            }
+
+            ManageHistory();
+            ActionProceed();
+            ActionFinish();
         }
 
-        ManageHistory();
-        ActionProceed();
-        ActionFinish();
+        protected virtual void ActionFinish()
+        {
+            currentAction = null;
+            Debug.LogError("Finish");
+        }
+
+        protected virtual void ManageHistory()
+        {
+
+        }
+
+        protected virtual void ActionProceed()
+        {
+
+        }
+
+        public virtual MenuActionBase GetActionCopy()
+        {
+            var type = GetType();
+            return (MenuActionBase)CreateInstance(type);
+        }
+
+        public virtual void EditorLogic() { }
     }
-
-    protected virtual void ActionFinish()
-    {
-        currentAction = null;
-        Debug.LogError("Finish");
-    }
-
-    protected virtual void ManageHistory()
-    {
-
-    }
-
-    protected virtual void ActionProceed() 
-    {
-
-    }
-
-    public virtual MenuActionBase GetActionCopy() 
-    {
-        var type = GetType();
-        return (MenuActionBase)CreateInstance(type);
-    }
-
-    public virtual void EditorLogic() { }
 }

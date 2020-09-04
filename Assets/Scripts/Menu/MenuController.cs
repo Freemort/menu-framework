@@ -2,39 +2,42 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteAlways]
-public class MenuController : MonoBehaviour
+namespace MutatronicMenues
 {
-    public static MenuController instance;
-
-    private static MenuHistory menuHistory;
-    public static MenuHistory MenuHistory
+    [ExecuteAlways]
+    public class MenuController : MonoBehaviour
     {
-        get
+        public static MenuController instance;
+
+        private static MenuHistory menuHistory;
+        public static MenuHistory MenuHistory
         {
-            if (menuHistory == null)
-                menuHistory = new MenuHistory();
-            return menuHistory;
+            get
+            {
+                if (menuHistory == null)
+                    menuHistory = new MenuHistory();
+                return menuHistory;
+            }
         }
-    }
 
-    public static void Back()
-    {
-        MenuActionBase.currentAction?.StopAction();
+        public static void Back()
+        {
+            MenuActionBase.currentAction?.StopAction();
 
-        if (MenuController.MenuHistory == null)
-            return;
+            if (MenuController.MenuHistory == null)
+                return;
 
-        if (MenuController.MenuHistory.Count == 0)
-            return;
+            if (MenuController.MenuHistory.Count == 0)
+                return;
 
-        MenuBase lastMenu = MenuController.MenuHistory[MenuController.MenuHistory.Count - 1];
-        lastMenu.backButton?.onClick.Invoke();
-    }
+            MenuBase lastMenu = MenuController.MenuHistory[MenuController.MenuHistory.Count - 1];
+            lastMenu.backButton?.onClick.Invoke();
+        }
 
-    private void Awake()
-    {
-        if (instance == null)
-            instance = this;
+        private void Awake()
+        {
+            if (instance == null)
+                instance = this;
+        }
     }
 }

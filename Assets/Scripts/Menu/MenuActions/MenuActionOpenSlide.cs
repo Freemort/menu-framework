@@ -3,47 +3,50 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public enum SliderType
+namespace MutatronicMenues
 {
-    Left,
-    Right,
-    Down,
-    Up
-}
-
-[CreateAssetMenu(fileName = "Open_Slide", menuName = "ScriptableObjects/MenuActions/Spawn_MenuOpenSlide", order = 1)]
-public class MenuActionOpenSlide : MenuActionOpenBase
-{
-    public MenuOpenSlideAnim slideAnim;
-    public SliderType sliderType;
-
-    protected override void ActionProceed()
+    public enum SliderType
     {
-        OpenBegin();
+        Left,
+        Right,
+        Down,
+        Up
     }
 
-    protected override void OpenBegin()
+    [CreateAssetMenu(fileName = "Open_Slide", menuName = "ScriptableObjects/MenuActions/Spawn_MenuOpenSlide", order = 1)]
+    public class MenuActionOpenSlide : MenuActionOpenBase
     {
-        targetMenu.gameObject.SetActive(true);
-        targetMenu.OpenBegin(parentMenu);
-        var rectTransform = targetMenu.gameObject.GetComponent<RectTransform>();
-        slideAnim = MenuOpenSlideAnim.CreateInstance<MenuOpenSlideAnim>();
-        slideAnim.Init(rectTransform, OpenFinish, sliderType);
-        slideAnim.AnimStart();
-    }
+        public MenuOpenSlideAnim slideAnim;
+        public SliderType sliderType;
 
-    protected override void OpenFinish()
-    {
-        targetMenu.OpenFinish();
-    }
+        protected override void ActionProceed()
+        {
+            OpenBegin();
+        }
 
-    public override void StopAction()
-    {
-        base.StopAction();
-    }
+        protected override void OpenBegin()
+        {
+            targetMenu.gameObject.SetActive(true);
+            targetMenu.OpenBegin(parentMenu);
+            var rectTransform = targetMenu.gameObject.GetComponent<RectTransform>();
+            slideAnim = MenuOpenSlideAnim.CreateInstance<MenuOpenSlideAnim>();
+            slideAnim.Init(rectTransform, OpenFinish, sliderType);
+            slideAnim.AnimStart();
+        }
 
-    public override void EditorLogic()
-    {
-        sliderType = (SliderType)EditorGUILayout.EnumPopup("Slider Type: ", sliderType);
+        protected override void OpenFinish()
+        {
+            targetMenu.OpenFinish();
+        }
+
+        public override void StopAction()
+        {
+            base.StopAction();
+        }
+
+        public override void EditorLogic()
+        {
+            sliderType = (SliderType)EditorGUILayout.EnumPopup("Slider Type: ", sliderType);
+        }
     }
 }

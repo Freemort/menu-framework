@@ -5,40 +5,44 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public abstract class AnimationActionBase: ScriptableObject
+namespace MutatronicMenues
 {
-    protected RectTransform transform;
-    protected Action postAction;
-    protected float timer;
+    public abstract class AnimationActionBase : ScriptableObject
+    {
+        protected RectTransform transform;
+        protected Action postAction;
+        protected float timer;
 
-    public Func<Task> AwaiterAction;
+        public Func<Task> AwaiterAction;
 
-    private float animProgress;
-    protected Action animAction;
+        private float animProgress;
+        protected Action animAction;
 
-    public float AnimProgress { 
-        get => animProgress; 
-        set
-        { 
-            animProgress = value;
-            animAction();
+        public float AnimProgress
+        {
+            get => animProgress;
+            set
+            {
+                animProgress = value;
+                animAction();
+            }
         }
-    }
 
-    public virtual async Task AnimStart()
-    {
-        await Animation();
-        AnimFinish();
-    }
+        public virtual async void AnimStart()
+        {
+            await Animation();
+            AnimFinish();
+        }
 
-    /// <summary>
-    /// By design should be async.
-    /// </summary>
-    /// <returns></returns>
-    protected abstract Task<float> Animation();
+        /// <summary>
+        /// By design should be async.
+        /// </summary>
+        /// <returns></returns>
+        protected abstract Task<float> Animation();
 
-    protected virtual void AnimFinish()
-    {
-        postAction?.Invoke();
+        protected virtual void AnimFinish()
+        {
+            postAction?.Invoke();
+        }
     }
 }

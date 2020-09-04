@@ -3,83 +3,86 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CreateAssetMenu(fileName = "Switch_Slide", menuName = "ScriptableObjects/MenuActions/Spawn_MenuSwitchSlide", order = 1)]
-public class MenuActionSwitchSlide : MenuActionSwitchBase
+namespace MutatronicMenues
 {
-    public SliderType sliderType;
-
-    protected override void ActionProceed()
+    [CreateAssetMenu(fileName = "Switch_Slide", menuName = "ScriptableObjects/MenuActions/Spawn_MenuSwitchSlide", order = 1)]
+    public class MenuActionSwitchSlide : MenuActionSwitchBase
     {
-        AnimationsBinder binder = new AnimationsBinder(AnimBinderType.Simultaneously, GetAnimClose(), GetOpenAnim());
-        binder.StartAnimations();
-        OpenBegin();
-        CloseBegin();
-    }
+        public SliderType sliderType;
 
-    private AnimationActionBase GetOpenAnim()
-    {
-        var rectTransform = targetMenu.gameObject.GetComponent<RectTransform>();
-        var slideAnimOpen = MenuOpenSlideAnim.CreateInstance<MenuOpenSlideAnim>();
-        slideAnimOpen.Init(rectTransform, OpenFinish, sliderType);
-        return slideAnimOpen;
-    }
-
-    private AnimationActionBase GetAnimClose()
-    {
-        SliderType closeSliderType;
-        switch (sliderType)
+        protected override void ActionProceed()
         {
-            case SliderType.Left:
-                closeSliderType = SliderType.Right;
-                break;
-            case SliderType.Right:
-                closeSliderType = SliderType.Left;
-                break;
-            case SliderType.Down:
-                closeSliderType = SliderType.Up;
-                break;
-            case SliderType.Up:
-                closeSliderType = SliderType.Down;
-                break;
-            default:
-                closeSliderType = SliderType.Right;
-                break;
+            AnimationsBinder binder = new AnimationsBinder(AnimBinderType.Simultaneously, GetAnimClose(), GetOpenAnim());
+            binder.StartAnimations();
+            OpenBegin();
+            CloseBegin();
         }
 
-        var rectTransform = parentMenu.gameObject.GetComponent<RectTransform>();
-        var slideAnimClose = MenuCloseSlideAnim.CreateInstance<MenuCloseSlideAnim>();
-        slideAnimClose.Init(rectTransform, CloseFinish, closeSliderType);
-        return slideAnimClose;
-    }
+        private AnimationActionBase GetOpenAnim()
+        {
+            var rectTransform = targetMenu.gameObject.GetComponent<RectTransform>();
+            var slideAnimOpen = MenuOpenSlideAnim.CreateInstance<MenuOpenSlideAnim>();
+            slideAnimOpen.Init(rectTransform, OpenFinish, sliderType);
+            return slideAnimOpen;
+        }
 
-    protected override void OpenBegin()
-    {
-        targetMenu.gameObject.SetActive(true);
-        targetMenu.OpenBegin(parentMenu);
-    }
+        private AnimationActionBase GetAnimClose()
+        {
+            SliderType closeSliderType;
+            switch (sliderType)
+            {
+                case SliderType.Left:
+                    closeSliderType = SliderType.Right;
+                    break;
+                case SliderType.Right:
+                    closeSliderType = SliderType.Left;
+                    break;
+                case SliderType.Down:
+                    closeSliderType = SliderType.Up;
+                    break;
+                case SliderType.Up:
+                    closeSliderType = SliderType.Down;
+                    break;
+                default:
+                    closeSliderType = SliderType.Right;
+                    break;
+            }
 
-    protected override void OpenFinish()
-    {
-        targetMenu.OpenFinish();
-    }
+            var rectTransform = parentMenu.gameObject.GetComponent<RectTransform>();
+            var slideAnimClose = MenuCloseSlideAnim.CreateInstance<MenuCloseSlideAnim>();
+            slideAnimClose.Init(rectTransform, CloseFinish, closeSliderType);
+            return slideAnimClose;
+        }
 
-    protected override void CloseBegin()
-    {
-        parentMenu.CloseBegin();
-    }
+        protected override void OpenBegin()
+        {
+            targetMenu.gameObject.SetActive(true);
+            targetMenu.OpenBegin(parentMenu);
+        }
 
-    protected override void CloseFinish()
-    {
-        parentMenu.gameObject.SetActive(false);
-        parentMenu.CloseFinish();
-    }
+        protected override void OpenFinish()
+        {
+            targetMenu.OpenFinish();
+        }
 
-    //public override void StopAction()
-    //{
-    //}
+        protected override void CloseBegin()
+        {
+            parentMenu.CloseBegin();
+        }
 
-    public override void EditorLogic()
-    {
-        sliderType = (SliderType)EditorGUILayout.EnumPopup("Slider Type: ", sliderType);
+        protected override void CloseFinish()
+        {
+            parentMenu.gameObject.SetActive(false);
+            parentMenu.CloseFinish();
+        }
+
+        //public override void StopAction()
+        //{
+        //}
+
+        public override void EditorLogic()
+        {
+            sliderType = (SliderType)EditorGUILayout.EnumPopup("Slider Type: ", sliderType);
+        }
     }
 }

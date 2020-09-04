@@ -2,26 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class MenuHistory: List<MenuBase>
+namespace MutatronicMenues
 {
-    public new void Add(MenuBase menuBase) 
+    [System.Serializable]
+    public class MenuHistory : List<MenuBase>
     {
-        if (base.Contains(menuBase))
-            return;
-
-        base.Add(menuBase);
-    }
-
-    public void RemoveFromChilds(MenuBase menuBase, bool includeParent = false) 
-    {
-        List<MenuBase> menuChilds = menuBase.menuChilds;
-        foreach (var item in menuChilds)
+        public new void Add(MenuBase menuBase)
         {
-            base.Remove(item);
-            RemoveFromChilds(item);
+            if (base.Contains(menuBase))
+                return;
+
+            base.Add(menuBase);
         }
-        if (includeParent)
-            base.Remove(menuBase);
+
+        public void RemoveFromChilds(MenuBase menuBase, bool includeParent = false)
+        {
+            List<MenuBase> menuChilds = menuBase.menuChilds;
+            foreach (var item in menuChilds)
+            {
+                base.Remove(item);
+                RemoveFromChilds(item);
+            }
+            if (includeParent)
+                base.Remove(menuBase);
+        }
     }
 }

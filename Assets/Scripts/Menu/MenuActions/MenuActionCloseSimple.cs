@@ -1,29 +1,32 @@
 ﻿using System.Threading.Tasks;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Close_Simple", menuName = "ScriptableObjects/MenuActions/Spawn_MenuCloseAction", order = 1)]
-public class MenuActionCloseSimple : MenuActionCloseBase
+namespace MutatronicMenues
 {
-    protected override void ActionProceed()
+    [CreateAssetMenu(fileName = "Close_Simple", menuName = "ScriptableObjects/MenuActions/Spawn_MenuCloseAction", order = 1)]
+    public class MenuActionCloseSimple : MenuActionCloseBase
     {
-        CloseBegin();
-        CloseFinish();
-    }
+        protected override void ActionProceed()
+        {
+            CloseBegin();
+            CloseFinish();
+        }
 
-    protected override void CloseBegin()
-    {
-        targetMenu.CloseBegin();
-    }
+        protected override void CloseBegin()
+        {
+            targetMenu.CloseBegin();
+        }
 
-    protected override void CloseFinish()
-    {
-        targetMenu.CloseFinish();
-        targetMenu.DisableChilds();
-        targetMenu.gameObject.SetActive(false);
-    }
+        protected override void CloseFinish()
+        {
+            targetMenu.CloseFinish();
+            targetMenu.DisableChilds();
+            targetMenu.gameObject.SetActive(false);
+        }
 
-    public override void StopAction()
-    {
-        base.StopAction();
+        public override void StopAction()
+        {
+            base.StopAction();
+        }
     }
 }
