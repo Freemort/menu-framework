@@ -13,23 +13,24 @@ namespace MutatronicMenues
 
         protected override void ActionProceed()
         {
-            CloseBegin();
+            ActionBegin();
         }
 
-        protected override void CloseBegin()
+        protected override void ActionBegin()
         {
             targetMenu.gameObject.SetActive(true);
             targetMenu.CloseBegin();
 
             var rectTransform = targetMenu.gameObject.GetComponent<RectTransform>();
             slideAnim = MenuCloseSlideAnim.CreateInstance<MenuCloseSlideAnim>();
-            slideAnim.Init(rectTransform, CloseFinish, sliderType);
+            slideAnim.Init(rectTransform, ActionFinish, sliderType, tokenSource.Token);
             slideAnim.AnimStart();
         }
 
-        protected override void CloseFinish()
+        protected override void ActionFinish()
         {
             targetMenu.CloseFinish();
+            base.ActionFinish();
         }
 
         public override void StopAction()

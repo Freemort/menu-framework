@@ -12,17 +12,16 @@ namespace MutatronicMenues
 
         protected override void ActionProceed()
         {
+            ActionBegin();
             AnimationsBinder binder = new AnimationsBinder(AnimBinderType.Simultaneously, GetAnimClose(), GetOpenAnim());
             binder.StartAnimations();
-            OpenBegin();
-            CloseBegin();
         }
 
         private AnimationActionBase GetOpenAnim()
         {
             var rectTransform = targetMenu.gameObject.GetComponent<RectTransform>();
             var slideAnimOpen = MenuOpenSlideAnim.CreateInstance<MenuOpenSlideAnim>();
-            slideAnimOpen.Init(rectTransform, OpenFinish, sliderType);
+            slideAnimOpen.Init(rectTransform, ActionFinish, sliderType, tokenSource.Token);
             return slideAnimOpen;
         }
 
@@ -50,35 +49,27 @@ namespace MutatronicMenues
 
             var rectTransform = parentMenu.gameObject.GetComponent<RectTransform>();
             var slideAnimClose = MenuCloseSlideAnim.CreateInstance<MenuCloseSlideAnim>();
-            slideAnimClose.Init(rectTransform, CloseFinish, closeSliderType);
+            slideAnimClose.Init(rectTransform, ActionFinish, closeSliderType, tokenSource.Token);
             return slideAnimClose;
         }
 
-        protected override void OpenBegin()
+        protected override void ActionBegin()
         {
             targetMenu.gameObject.SetActive(true);
             targetMenu.OpenBegin(parentMenu);
-        }
 
-        protected override void OpenFinish()
-        {
-            targetMenu.OpenFinish();
-        }
-
-        protected override void CloseBegin()
-        {
             parentMenu.CloseBegin();
         }
 
-        protected override void CloseFinish()
+        protected override void ActionFinish()
         {
+            targetMenu.OpenFinish();
+
             parentMenu.gameObject.SetActive(false);
             parentMenu.CloseFinish();
-        }
 
-        //public override void StopAction()
-        //{
-        //}
+            base.ActionFinish();
+        }
 
         public override void EditorLogic()
         {

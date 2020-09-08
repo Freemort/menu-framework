@@ -8,19 +8,20 @@ namespace MutatronicMenues
     {
         protected override void ActionProceed()
         {
-            OpenBegin();
-            OpenFinish();
+            ActionBegin();
+            ActionFinish();
         }
 
-        protected override void OpenBegin()
+        protected override void ActionBegin()
         {
             targetMenu.gameObject.SetActive(true);
             targetMenu.OpenBegin(parentMenu);
         }
 
-        protected override void OpenFinish()
+        protected override void ActionFinish()
         {
             targetMenu.OpenFinish();
+            base.ActionFinish();
         }
 
         public override void StopAction()

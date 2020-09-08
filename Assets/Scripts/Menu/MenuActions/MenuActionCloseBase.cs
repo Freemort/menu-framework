@@ -8,8 +8,5 @@ namespace MutatronicMenues
         {
             MenuController.MenuHistory.RemoveFromChilds(targetMenu, true);
         }
-
-        protected abstract void CloseBegin();
-        protected abstract void CloseFinish();
     }
 }

@@ -8,20 +8,22 @@ namespace MutatronicMenues
     {
         protected override void ActionProceed()
         {
-            CloseBegin();
-            CloseFinish();
+            ActionBegin();
+            ActionFinish();
         }
 
-        protected override void CloseBegin()
+        protected override void ActionBegin()
         {
             targetMenu.CloseBegin();
         }
 
-        protected override void CloseFinish()
+        protected override void ActionFinish()
         {
             targetMenu.CloseFinish();
             targetMenu.DisableChilds();
             targetMenu.gameObject.SetActive(false);
+
+            base.ActionFinish();
         }
 
         public override void StopAction()

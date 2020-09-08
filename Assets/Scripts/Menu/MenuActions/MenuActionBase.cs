@@ -26,6 +26,7 @@ namespace MutatronicMenues
             this.targetMenu = targetMenu;
 
             currentAction = this;
+            ManageHistory();
 
             tokenSource = new CancellationTokenSource();
             if (targetMenu.awaiterType == AwaiterRunType.Await)
@@ -40,11 +41,10 @@ namespace MutatronicMenues
                     Task.Run(() => targetMenu.AwaitersBegin(tokenSource.Token));
 #pragma warning restore CS4014 // Так как этот вызов не ожидается, выполнение существующего метода продолжается до тех пор, пока вызов не будет завершен
             }
-
-            ManageHistory();
             ActionProceed();
-            ActionFinish();
         }
+
+        protected abstract void ActionBegin();
 
         protected virtual void ActionFinish()
         {
@@ -52,15 +52,9 @@ namespace MutatronicMenues
             Debug.LogError("Finish");
         }
 
-        protected virtual void ManageHistory()
-        {
+        protected virtual void ManageHistory() { }
 
-        }
-
-        protected virtual void ActionProceed()
-        {
-
-        }
+        protected virtual void ActionProceed() { }
 
         public virtual MenuActionBase GetActionCopy()
         {

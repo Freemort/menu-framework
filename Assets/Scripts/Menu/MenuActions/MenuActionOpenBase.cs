@@ -8,8 +8,5 @@ namespace MutatronicMenues
         {
             MenuController.MenuHistory.Add(targetMenu);
         }
-
-        protected abstract void OpenBegin();
-        protected abstract void OpenFinish();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -11,8 +12,10 @@ namespace MutatronicMenues
     {
         private SliderType sliderType;
 
-        public void Init(RectTransform transform, Action action, SliderType sliderType)
+        public void Init(RectTransform transform, Action action, SliderType sliderType, CancellationToken token)
         {
+            cancellationToken = token;
+
             postAction = action;
             timer = 1f;
             this.transform = transform;
@@ -26,6 +29,8 @@ namespace MutatronicMenues
             AnimProgress = 0f;
             for (float i = 0; i < timer; i += Time.deltaTime)
             {
+                if (cancellationToken.IsCancellationRequested)
+                    return AnimProgress;
                 await AnimStep(i);
             }
             AnimProgress = 1f;
@@ -60,6 +65,9 @@ namespace MutatronicMenues
 
         private async Task AnimStep(float i)
         {
+            if (cancellationToken.IsCancellationRequested)
+                return;
+
             if (i > 0)
                 AnimProgress = i / timer;
             if (AnimProgress > 1)
